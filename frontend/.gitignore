@@ -44,7 +44,7 @@ bower_components
 build/Release
 
 # Dependency directories
-../node_modules/
+node_modules/
 jspm_packages/
 
 # Snowpack dependency directory (https://snowpack.dev/)
@@ -156,3 +156,7 @@ dist
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 .idea/
+
+### Build ###
+
+build/
