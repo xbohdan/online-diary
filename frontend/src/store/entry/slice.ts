@@ -32,7 +32,7 @@ export const entrySlice = createSlice({
         const { title, note, status } = action.payload;
         state.title = title;
         state.note = note;
-        state.status = status;
+        state.status = 'show';
       })
       .addCase(getEntry.rejected, (state) => {
         state.status = 'write';
