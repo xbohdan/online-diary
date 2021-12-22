@@ -30,17 +30,17 @@ namespace DiaryApi.Controllers
         }
 
         // GET: api/Entries/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Entry>> GetEntry(int id)
+        [HttpGet("{date}")]
+        public async Task<IActionResult> GetEntry(DateTime date)
         {
-            var entry = await _context.Entries.FindAsync(id);
+            var entry = await _context.Entries.Where(x => x.CreationDate == date).FirstOrDefaultAsync();
 
             if (entry == null)
             {
                 return NotFound();
             }
 
-            return entry;
+            return Ok( new { entry.Title, entry.Note });
         }
 
         // PUT: api/Entries/5
@@ -77,12 +77,12 @@ namespace DiaryApi.Controllers
         // POST: api/Entries
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Entry>> PostEntry(Entry entry)
+        public async Task<ActionResult<Entry>> PostEntry([Bind("Title,Note,CreationDate")]Entry entry)
         {
             _context.Entries.Add(entry);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetEntry", new { id = entry.EntryId }, entry);
+            return CreatedAtAction("GetEntry", new { date = entry.CreationDate }, entry);
         }
 
         // DELETE: api/Entries/5
