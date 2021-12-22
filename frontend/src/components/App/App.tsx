@@ -10,7 +10,7 @@ const App = () => {
       <Header />
       <Routes>
         <Route path="/" element={<NotesCalendar />} />
-        <Route path="/note" element={<Note />} />
+        <Route path="/note/:date" element={<Note />} />
       </Routes>
     </Router>
   );

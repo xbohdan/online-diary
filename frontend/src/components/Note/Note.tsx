@@ -1,31 +1,31 @@
-import React from 'react';
-import { useForm } from 'react-hook-form';
-import TextareaAutosize from 'react-textarea-autosize';
+import React, { useLayoutEffect } from 'react';
+import { useParams } from 'react-router-dom';
 
 import './Note.css';
 
+import useAppDispatch from '../../hooks/useAppDispatch';
+import useAppSelector from '../../hooks/useAppSelector';
+import selectEntry from '../../store/entry/selectors';
+import getEntry from '../../store/entry/thunks/getEntry';
+import ShowNote from '../ShowNote/ShowNote';
+import WriteNote from '../WriteNote/WriteNote';
+
 const Note = () => {
-  const { register, handleSubmit } = useForm();
+  const dispatch = useAppDispatch();
+  const entry = useAppSelector(selectEntry);
+  const { date } = useParams();
 
-  const submitNote = (noteText: any) => {
-    console.log(noteText);
-  };
+  useLayoutEffect(() => {
+    dispatch(getEntry(date as string));
+  }, [date]);
 
-  return (
-    <form onSubmit={handleSubmit(submitNote)} className="noteForm">
-      <input
-        {...register('title', { required: true })}
-        className="title"
-        placeholder="Title"
-      />
-      <TextareaAutosize
-        {...register('noteText', { required: true })}
-        className="noteText"
-        placeholder="Write your note..."
-      />
-      <input type="submit" className="submitButton" value="Save" />
-    </form>
-  );
+  if (entry.status === 'loading') return <p>Loading...</p>;
+
+  if (entry.status === 'show') {
+    return <ShowNote entry={entry} />;
+  }
+
+  return <WriteNote />;
 };
 
 export default Note;
