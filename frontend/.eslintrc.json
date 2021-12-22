@@ -22,6 +22,8 @@
     "react-hooks"
   ],
   "rules": {
+    "no-param-reassign": "off",
+    "operator-linebreak": "off",
     "react/jsx-props-no-spreading": "off",
     "linebreak-style": "off",
     "no-use-before-define": "off",
