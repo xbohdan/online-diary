@@ -82,7 +82,7 @@ namespace DiaryApi.Controllers
             _context.Entries.Add(entry);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetEntry", new { date = entry.CreationDate }, entry);
+            return CreatedAtAction("GetEntry", new { date = entry.CreationDate.ToString("yyyy-MM-dd") }, entry);
         }
 
         // DELETE: api/Entries/5
