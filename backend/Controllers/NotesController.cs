@@ -46,13 +46,8 @@ namespace DiaryApi.Controllers
         // PUT: api/Notes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{creationDate}")]
-        public async Task<IActionResult> PutNote(DateTime creationDate, [Bind("Heading, Content, CreationDate, ModificationDate")] Note note)
+        public async Task<IActionResult> PutNote(DateTime creationDate, [Bind("Heading, Content, ModificationDate")] Note note)
         {
-            if (creationDate != note.CreationDate)
-            {
-                return BadRequest();
-            }
-
             var noteToUpdate = await _context.Notes.Where(x => x.CreationDate == creationDate).FirstOrDefaultAsync();
 
             if (note == null)
@@ -100,6 +95,7 @@ namespace DiaryApi.Controllers
         public async Task<IActionResult> DeleteNote(DateTime creationDate)
         {
             var note = await _context.Notes.Where(x => x.CreationDate == creationDate).FirstOrDefaultAsync();
+
             if (note == null)
             {
                 return NotFound();
