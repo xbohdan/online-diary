@@ -15,7 +15,7 @@ namespace DiaryApi.Models
         public string Content { get; set; } = null!;
 
         [DataType(DataType.Date)]
-        public DateTime CreationDate { get; set; }
+        public DateTime InitialDate { get; set; }
 
         [DataType(DataType.Date)]
         public DateTime? ModificationDate { get; set; }

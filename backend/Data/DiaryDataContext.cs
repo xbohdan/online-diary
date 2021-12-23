@@ -33,12 +33,12 @@ namespace DiaryApi.Data
             {
                 entity.ToTable("Note");
 
-                entity.HasIndex(e => e.CreationDate, "UQ__tmp_ms_x__AB332B37BDC02535")
+                entity.HasIndex(e => e.InitialDate, "UQ__Note__72232AC97CB6B6F7")
                     .IsUnique();
 
-                entity.Property(e => e.CreationDate).HasColumnType("date");
-
                 entity.Property(e => e.Heading).HasMaxLength(100);
+
+                entity.Property(e => e.InitialDate).HasColumnType("date");
 
                 entity.Property(e => e.ModificationDate).HasColumnType("date");
             });

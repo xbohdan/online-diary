@@ -30,10 +30,10 @@ namespace DiaryApi.Controllers
         }
 
         // GET: api/Notes/5
-        [HttpGet("{creationDate}")]
-        public async Task<ActionResult<Note>> GetNote(DateTime creationDate)
+        [HttpGet("{initialDate}")]
+        public async Task<ActionResult<Note>> GetNote(DateTime initialDate)
         {
-            var note = await _context.Notes.Where(x => x.CreationDate == creationDate).FirstOrDefaultAsync();
+            var note = await _context.Notes.Where(x => x.InitialDate == initialDate).FirstOrDefaultAsync();
 
             if (note == null)
             {
@@ -45,10 +45,10 @@ namespace DiaryApi.Controllers
 
         // PUT: api/Notes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{creationDate}")]
-        public async Task<IActionResult> PutNote(DateTime creationDate, [Bind("Heading, Content, ModificationDate")] Note note)
+        [HttpPut("{initialDate}")]
+        public async Task<IActionResult> PutNote(DateTime initialDate, [Bind("Heading, Content, ModificationDate")] Note note)
         {
-            var noteToUpdate = await _context.Notes.Where(x => x.CreationDate == creationDate).FirstOrDefaultAsync();
+            var noteToUpdate = await _context.Notes.Where(x => x.InitialDate == initialDate).FirstOrDefaultAsync();
 
             if (note == null)
             {
@@ -66,7 +66,7 @@ namespace DiaryApi.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!NoteExists(creationDate))
+                if (!NoteExists(initialDate))
                 {
                     return NotFound();
                 }
@@ -82,19 +82,19 @@ namespace DiaryApi.Controllers
         // POST: api/Notes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Note>> PostNote([Bind("Heading, Content, CreationDate")] Note note)
+        public async Task<ActionResult<Note>> PostNote([Bind("Heading, Content, InitialDate")] Note note)
         {
             _context.Notes.Add(note);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetNote), new { creationDate = note.CreationDate.ToString("yyyy-MM-dd") }, note);
+            return CreatedAtAction(nameof(GetNote), new { initialDate = note.InitialDate.ToString("yyyy-MM-dd") }, note);
         }
 
         // DELETE: api/Notes/5
-        [HttpDelete("{creationDate}")]
-        public async Task<IActionResult> DeleteNote(DateTime creationDate)
+        [HttpDelete("{initialDate}")]
+        public async Task<IActionResult> DeleteNote(DateTime initialDate)
         {
-            var note = await _context.Notes.Where(x => x.CreationDate == creationDate).FirstOrDefaultAsync();
+            var note = await _context.Notes.Where(x => x.InitialDate == initialDate).FirstOrDefaultAsync();
 
             if (note == null)
             {
@@ -107,9 +107,9 @@ namespace DiaryApi.Controllers
             return NoContent();
         }
 
-        private bool NoteExists(DateTime creationDate)
+        private bool NoteExists(DateTime initialDate)
         {
-            return _context.Notes.Any(x => x.CreationDate == creationDate);
+            return _context.Notes.Any(x => x.InitialDate == initialDate);
         }
     }
 }
