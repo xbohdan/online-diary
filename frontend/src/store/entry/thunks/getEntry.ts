@@ -1,20 +1,23 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { BASE_API_URL, entryMocked } from '../../../config';
-import dateToString from '../../../helpers/dateToString';
+import { dayDurationMs, today } from '../../../helpers/isEditable';
 import returnDataWithDelay from '../../../helpers/returnDataWithDelay';
 import mockShowEntry from '../../../mocks/mockShowEntry';
-import mockWriteEntry from '../../../mocks/mockWriteEntry';
+
 import { IEntry } from '../slice';
 
 const getEntry = createAsyncThunk<IEntry, string>(
   'entries/fetchEntry',
   async (fetchDate: string) => {
     if (entryMocked) {
-      if (fetchDate === dateToString(new Date())) {
+      if (
+        Math.abs(new Date(fetchDate).getTime() - today) <=
+        dayDurationMs * 2
+      ) {
         return returnDataWithDelay(mockShowEntry, '4G');
       }
 
-      return returnDataWithDelay(mockWriteEntry, '4G');
+      return Promise.reject(new Error('Mock write'));
     }
 
     const res = await fetch(`${BASE_API_URL}/entries/${fetchDate}`);
