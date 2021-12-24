@@ -1,0 +1,33 @@
+.primaryButton {
+    color: white;
+    background-color: var(--main-color);
+    border: transparent;
+    border-radius: 5px;
+
+    cursor: pointer;
+
+    font-size: 100%;
+}
+
+.primaryButton:hover {
+    background-color: var(--main-color-hover);
+}
+
+.primaryButton:active {
+    animation-name: primaryButtonPressed;
+    animation-duration: 100ms;
+}
+
+@keyframes primaryButtonPressed {
+    0% {
+        width: 25%;
+        height: 50px;
+    }
+    50% {
+        transform: scale(0.95);
+    }
+    100% {
+        width: 25%;
+        height: 50px;
+    }
+}

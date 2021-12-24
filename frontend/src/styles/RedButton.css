@@ -1,0 +1,33 @@
+.redButton {
+    color: white;
+    background-color: var(--red-color);
+    border: transparent;
+    border-radius: 5px;
+
+    cursor: pointer;
+
+    font-size: 100%;
+}
+
+.redButton:hover {
+    background-color: var(--red-color-hover);
+}
+
+.redButton:active {
+    animation-name: redButtonPressed;
+    animation-duration: 100ms;
+}
+
+@keyframes redButtonPressed {
+    0% {
+        width: 15%;
+        height: 50px;
+    }
+    50% {
+        transform: scale(0.95);
+    }
+    100% {
+        width: 15%;
+        height: 50px;
+    }
+}
