@@ -4,9 +4,10 @@ import { useParams } from 'react-router-dom';
 import TextareaAutosize from 'react-textarea-autosize';
 
 import './WriteNote.css';
-import useAppDispatch from '../../hooks/useAppDispatch';
-import { IEntry } from '../../store/entry/slice';
-import postEntry from '../../store/entry/thunks/postEntry';
+
+import useAppDispatch from '../../../hooks/useAppDispatch';
+import { IEntry } from '../../../store/entry/slice';
+import postEntry from '../../../store/entry/thunks/postEntry';
 
 interface INote {
   title: string;
@@ -20,7 +21,6 @@ const WriteNote = () => {
   const { date } = useParams();
 
   const submitNote = (entry: INote) => {
-    console.log(entry);
     entry.creationDate = date;
     dispatch(postEntry(entry as IEntry));
   };
@@ -29,15 +29,15 @@ const WriteNote = () => {
     <form onSubmit={handleSubmit(submitNote)} className="noteForm">
       <input
         {...register('title', { required: true })}
-        className="title"
+        className="title inputField"
         placeholder="Title"
       />
       <TextareaAutosize
         {...register('note', { required: true })}
-        className="noteText"
+        className="noteText inputField"
         placeholder="Write your note..."
       />
-      <input type="submit" className="submitButton" value="Save" />
+      <input type="submit" className="primaryButton saveButton" value="Save" />
     </form>
   );
 };
