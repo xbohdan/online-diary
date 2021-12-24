@@ -17,7 +17,7 @@ namespace DiaryApi.Data
         {
         }
 
-        public virtual DbSet<Entry> Entries { get; set; } = null!;
+        public virtual DbSet<Note> Notes { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -29,11 +29,18 @@ namespace DiaryApi.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Entry>(entity =>
+            modelBuilder.Entity<Note>(entity =>
             {
-                entity.ToTable("Entry");
+                entity.ToTable("Note");
 
-                entity.Property(e => e.Title).HasMaxLength(100);
+                entity.HasIndex(e => e.InitialDate, "UQ__Note__72232AC97CB6B6F7")
+                    .IsUnique();
+
+                entity.Property(e => e.Heading).HasMaxLength(100);
+
+                entity.Property(e => e.InitialDate).HasColumnType("date");
+
+                entity.Property(e => e.ModificationDate).HasColumnType("date");
             });
 
             OnModelCreatingPartial(modelBuilder);

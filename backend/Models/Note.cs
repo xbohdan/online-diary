@@ -4,21 +4,18 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DiaryApi.Models
 {
-    public partial class Entry
+    public partial class Note
     {
-        public int EntryId { get; set; }
+        public int NoteId { get; set; }
 
         public int? UserId { get; set; }
 
-        [Required]
-        public string Title { get; set; } = null!;
+        public string Heading { get; set; } = null!;
 
-        [Required]
-        public string Note { get; set; } = null!;
+        public string Content { get; set; } = null!;
 
-        [Required]
         [DataType(DataType.Date)]
-        public DateTime CreationDate { get; set; }
+        public DateTime InitialDate { get; set; }
 
         [DataType(DataType.Date)]
         public DateTime? ModificationDate { get; set; }
