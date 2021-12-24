@@ -29,7 +29,7 @@ export const entrySlice = createSlice({
         state.status = 'loading';
       })
       .addCase(getEntry.fulfilled, (state, action) => {
-        const { title, note, status } = action.payload;
+        const { title, note } = action.payload;
         state.title = title;
         state.note = note;
         state.status = 'show';
