@@ -1,0 +1,33 @@
+.secondaryButton {
+    color: white;
+    background-color: var(--tertiary-color);
+    border: transparent;
+    border-radius: 5px;
+
+    cursor: pointer;
+
+    font-size: 100%;
+}
+
+.secondaryButton:hover {
+    background-color: var(--tertiary-color-hover);
+}
+
+.secondaryButton:active {
+    animation-name: secondaryButtonPressed;
+    animation-duration: 100ms;
+}
+
+@keyframes secondaryButtonPressed {
+    0% {
+        width: 15%;
+        height: 50px;
+    }
+    50% {
+        transform: scale(0.95);
+    }
+    100% {
+        width: 15%;
+        height: 50px;
+    }
+}

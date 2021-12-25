@@ -17,3 +17,7 @@ body {
   font-style: normal;
   line-height: 19px;
 }
+
+p, h1, input, textarea {
+  font-family: "Arial";
+}

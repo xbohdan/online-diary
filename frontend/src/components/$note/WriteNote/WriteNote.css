@@ -3,18 +3,20 @@
 
     display: flex;
     flex-direction: column;
-    align-items: end;
+    align-items: flex-end;
 
     margin: 0 auto;
+}
 
-    font-family: monospace;
+.inputField {
+    border: 1px solid var(--main-color);
+    border-radius: 5px;
 }
 
 .title {
     width: 100%;
     height: 50px;
 
-    font-family: monospace;
     font-size: 2rem;
     text-align: center;
 }
@@ -31,22 +33,13 @@
     overflow-y: hidden;
 }
 
-.title:focus::placeholder {
-    color: transparent;
-}
-
-.submitButton {
+.saveButton {
     width: 25%;
     height: 50px;
 
     margin-top: 15px;
-
-    font-size: 100%;
-    background-color: transparent;
-    border: 1px solid black;
-    border-radius: 15px;
 }
 
-.submitButton:hover {
-    background-color: #eeeeee;
+.title:focus::placeholder {
+    color: transparent;
 }
