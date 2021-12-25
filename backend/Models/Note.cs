@@ -10,9 +10,11 @@ namespace DiaryApi.Models
 
         public int? UserId { get; set; }
 
-        public string Heading { get; set; } = null!;
+        [DataType(DataType.Text)]
+        public string Heading { get; set; } = "";
 
-        public string Content { get; set; } = null!;
+        [DataType(DataType.MultilineText)]
+        public string Content { get; set; } = "";
 
         [DataType(DataType.Date)]
         public DateTime InitialDate { get; set; }
