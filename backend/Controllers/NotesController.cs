@@ -1,5 +1,4 @@
-﻿#nullable disable
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,11 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DiaryApi.Data;
 using DiaryApi.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DiaryApi.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
+    [ApiController, Authorize, Route("api/[controller]")]
     public class NotesController : ControllerBase
     {
         private readonly DiaryDataContext _context;
@@ -50,7 +49,7 @@ namespace DiaryApi.Controllers
         {
             var noteToUpdate = await _context.Notes.Where(x => x.InitialDate == initialDate).FirstOrDefaultAsync();
 
-            if (note == null)
+            if (noteToUpdate == null)
             {
                 return NotFound();
             }
