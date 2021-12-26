@@ -1,0 +1,9 @@
+.container {
+    --width: 940px;
+    --padding: 5px;
+
+    width: 100%;
+    max-width: var(--width);
+    margin: 0 auto;
+    padding: 0 var(--padding);
+}

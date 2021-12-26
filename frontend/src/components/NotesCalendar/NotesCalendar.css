@@ -1,13 +1,8 @@
-.calendar-container {
+.calendar {
     height: 100%;
+    width: 50%;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
-}
-
-.calendar {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translateX(-50%) translateY(-50%);
 }

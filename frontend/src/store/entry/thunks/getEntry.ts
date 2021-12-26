@@ -14,7 +14,7 @@ const getEntry = createAsyncThunk<IEntry, string>(
         Math.abs(new Date(fetchDate).getTime() - today) <=
         dayDurationMs * 2
       ) {
-        return returnDataWithDelay(mockShowEntry, '4G');
+        return returnDataWithDelay(mockShowEntry, 'fast 3G');
       }
 
       return Promise.reject(new Error('Mock write'));

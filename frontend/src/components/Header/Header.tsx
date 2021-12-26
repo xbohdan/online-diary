@@ -3,12 +3,22 @@ import { Link } from 'react-router-dom';
 import logo from '../../static/LargeLogo.png';
 
 import './Header.css';
+import Container from '../Container/Container';
 
 const Header = () => {
   return (
-    <Link to="/">
-      <img src={logo} alt="Logo" className="logo" />
-    </Link>
+    <div className="header">
+      <Container className="flex justify-between align-center">
+        <Link to="/">
+          <img src={logo} alt="Logo" className="logo" />
+        </Link>
+        <input
+          type="button"
+          className="redButton logoutButton"
+          value="Log out"
+        />
+      </Container>
+    </div>
   );
 };
 

@@ -1,5 +1,17 @@
+.header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.logoutButton {
+    width: 15%;
+    height: 50px;
+}
+
 .logo {
     width: 200px;
-    display: flex;
     margin: 25px auto;
 }

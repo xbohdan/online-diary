@@ -21,3 +21,25 @@ body {
 p, h1, input, textarea {
   font-family: "Arial";
 }
+
+.flex {
+  display: flex;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.center {
+  justify-content: center;
+
+  text-align: center;
+}
