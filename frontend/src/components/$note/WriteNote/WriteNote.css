@@ -1,5 +1,4 @@
 .noteForm {
-    width: 75%;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
@@ -24,8 +23,9 @@
     width: 100%;
     height: 100%;
 
-    padding: 15px;
+    padding: 15px 20px;
     margin-top: 15px;
+    line-height: 32px;
 
     font-size: 1rem;
 

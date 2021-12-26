@@ -6,6 +6,7 @@ import './Note.css';
 import useAppDispatch from '../../../hooks/useAppDispatch';
 import useAppSelector from '../../../hooks/useAppSelector';
 import selectEntry from '../../../store/entry/selectors';
+import { initialState } from '../../../store/entry/slice';
 import getEntry from '../../../store/entry/thunks/getEntry';
 import Container from '../../Container/Container';
 import Loader from '../../Loader/Loader';
@@ -23,13 +24,14 @@ const Note = () => {
   }, [dispatch, date]);
 
   return (
-    <Container>
-      <PageTemplate>
+    <PageTemplate>
+      <Container>
         {entry.status === 'loading' && <Loader />}
         {entry.status === 'show' && <ShowNote entry={entry} />}
-        {entry.status === 'write' && <WriteNote />}
-      </PageTemplate>
-    </Container>
+        {entry.status === 'write' && <WriteNote entry={initialState} />}
+        {entry.status === 'update' && <WriteNote entry={entry} />}
+      </Container>
+    </PageTemplate>
   );
 };
 

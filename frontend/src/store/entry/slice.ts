@@ -1,17 +1,21 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import getEntry from './thunks/getEntry';
 
+export type NoteStatus = 'loading' | 'show' | 'write' | 'update';
+
 export interface IEntry {
   title: string | undefined;
   note: string | undefined;
   creationDate?: string | undefined;
-  status: 'loading' | 'show' | 'write';
+  modificationDate?: string | undefined;
+  status: NoteStatus;
 }
 
-const initialState: IEntry = {
+export const initialState: IEntry = {
   title: undefined,
   note: undefined,
   creationDate: undefined,
+  modificationDate: undefined,
   status: 'loading',
 };
 
@@ -21,6 +25,9 @@ export const entrySlice = createSlice({
   reducers: {
     setEntry: (state, action: PayloadAction<IEntry>) => {
       state = action.payload;
+    },
+    setStatus: (state, action: PayloadAction<NoteStatus>) => {
+      state.status = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -40,6 +47,6 @@ export const entrySlice = createSlice({
   },
 });
 
-export const { setEntry } = entrySlice.actions;
+export const { setEntry, setStatus } = entrySlice.actions;
 
 export default entrySlice.reducer;

@@ -3,13 +3,16 @@ import React from 'react';
 import './ShowNote.css';
 import { useParams } from 'react-router-dom';
 import isEditable from '../../../helpers/isEditable';
-import { IEntry } from '../../../store/entry/slice';
+import useAppDispatch from '../../../hooks/useAppDispatch';
+import { IEntry, setStatus } from '../../../store/entry/slice';
 
 interface Props {
   entry: IEntry;
 }
 
 const ShowNote = ({ entry }: Props) => {
+  const dispatch = useAppDispatch();
+
   const { title, note } = entry;
   const { date } = useParams();
   const dateObj = new Date(date as string);
@@ -28,6 +31,7 @@ const ShowNote = ({ entry }: Props) => {
             type="button"
             className="secondaryButton editButton"
             value="Edit"
+            onClick={() => dispatch(setStatus('update'))}
           />
         )}
         <input
