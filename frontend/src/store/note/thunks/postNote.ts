@@ -1,15 +1,15 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { BASE_API_URL, entryMocked } from '../../../config';
-import { IEntry } from '../slice';
+import { INote } from '../../../types/INote';
 
-const postEntry = createAsyncThunk<IEntry, IEntry>(
-  'entries/fetchEntry',
-  async (note: IEntry) => {
+const postNote = createAsyncThunk<INote, INote>(
+  'notes/fetchNote',
+  async (note: INote) => {
     if (entryMocked) {
       return note;
     }
 
-    const url = `${BASE_API_URL}/entries/`;
+    const url = `${BASE_API_URL}/notes/`;
 
     const res = await fetch(url, {
       method: 'POST',
@@ -22,8 +22,8 @@ const postEntry = createAsyncThunk<IEntry, IEntry>(
     if (!res.ok) throw new Error(res.statusText);
 
     const data = await res.json();
-    return data as IEntry;
+    return data as INote;
   },
 );
 
-export default postEntry;
+export default postNote;

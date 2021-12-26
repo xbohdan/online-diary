@@ -7,45 +7,45 @@ import './WriteNote.css';
 import dateToString from '../../../helpers/dateToString';
 
 import useAppDispatch from '../../../hooks/useAppDispatch';
-import { IEntry } from '../../../store/entry/slice';
-import postEntry from '../../../store/entry/thunks/postEntry';
-import putEntry from '../../../store/entry/thunks/putEntry';
+import { INote } from '../../../types/INote';
+import postNote from '../../../store/note/thunks/postNote';
+import putNote from '../../../store/note/thunks/putNote';
 
 interface IProps {
-  entry: IEntry;
+  note: INote;
 }
 
-const WriteNote = ({ entry }: IProps) => {
+const WriteNote = ({ note }: IProps) => {
   const dispatch = useAppDispatch();
   const { register, handleSubmit } = useForm();
   const { date } = useParams();
 
-  const { title, note, status } = entry;
+  const { heading, content, status } = note;
 
-  const submitNote = (_entry: IEntry) => {
+  const submitNote = (_entry: INote) => {
     _entry.creationDate = date;
 
     if (status === 'write') {
-      dispatch(postEntry(_entry));
+      dispatch(postNote(_entry));
     } else if (status === 'update') {
       _entry.modificationDate = dateToString(new Date());
-      dispatch(putEntry(_entry));
+      dispatch(putNote(_entry));
     }
   };
 
   return (
     <form onSubmit={handleSubmit(submitNote)} className="noteForm">
       <input
-        {...register('title', { required: true })}
-        className="title inputField"
+        {...register('heading', { required: true })}
+        className="writeHeading inputField"
         placeholder="Title"
-        defaultValue={title}
+        defaultValue={heading}
       />
       <TextareaAutosize
-        {...register('note', { required: true })}
-        className="noteText inputField"
+        {...register('content', { required: true })}
+        className="writeContent inputField"
         placeholder="Write your note..."
-        defaultValue={note}
+        defaultValue={content}
       />
       <input type="submit" className="primaryButton saveButton" value="Save" />
     </form>

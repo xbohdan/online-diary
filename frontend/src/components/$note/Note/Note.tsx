@@ -5,9 +5,9 @@ import './Note.css';
 
 import useAppDispatch from '../../../hooks/useAppDispatch';
 import useAppSelector from '../../../hooks/useAppSelector';
-import selectEntry from '../../../store/entry/selectors';
-import { initialState } from '../../../store/entry/slice';
-import getEntry from '../../../store/entry/thunks/getEntry';
+import selectNote from '../../../store/note/selectors';
+import { initialState } from '../../../store/note/slice';
+import getNote from '../../../store/note/thunks/getNote';
 import Container from '../../Container/Container';
 import Loader from '../../Loader/Loader';
 import PageTemplate from '../../PageTemplate/PageTemplate';
@@ -16,20 +16,20 @@ import WriteNote from '../WriteNote/WriteNote';
 
 const Note = () => {
   const dispatch = useAppDispatch();
-  const entry = useAppSelector(selectEntry);
+  const note = useAppSelector(selectNote);
   const { date } = useParams();
 
   useLayoutEffect(() => {
-    dispatch(getEntry(date as string));
+    dispatch(getNote(date as string));
   }, [dispatch, date]);
 
   return (
     <PageTemplate>
       <Container>
-        {entry.status === 'loading' && <Loader />}
-        {entry.status === 'show' && <ShowNote entry={entry} />}
-        {entry.status === 'write' && <WriteNote entry={initialState} />}
-        {entry.status === 'update' && <WriteNote entry={entry} />}
+        {note.status === 'loading' && <Loader />}
+        {note.status === 'show' && <ShowNote note={note} />}
+        {note.status === 'write' && <WriteNote note={initialState} />}
+        {note.status === 'update' && <WriteNote note={note} />}
       </Container>
     </PageTemplate>
   );

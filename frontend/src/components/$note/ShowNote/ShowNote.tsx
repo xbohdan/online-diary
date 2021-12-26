@@ -4,28 +4,29 @@ import './ShowNote.css';
 import { useParams } from 'react-router-dom';
 import isEditable from '../../../helpers/isEditable';
 import useAppDispatch from '../../../hooks/useAppDispatch';
-import { IEntry, setStatus } from '../../../store/entry/slice';
+import { setStatus } from '../../../store/note/slice';
+import { INote } from '../../../types/INote';
 
 interface Props {
-  entry: IEntry;
+  note: INote;
 }
 
-const ShowNote = ({ entry }: Props) => {
+const ShowNote = ({ note }: Props) => {
   const dispatch = useAppDispatch();
 
-  const { title, note } = entry;
+  const { heading, content } = note;
   const { date } = useParams();
   const dateObj = new Date(date as string);
   const canEdit = isEditable(dateObj);
 
   return (
     <>
-      <div className="showEntry">
-        <h1 className="showTitle">{title}</h1>
-        <hr className="titleContentLine" />
-        <p className="showNote">{note}</p>
+      <div className="showNote">
+        <h1 className="showHeading">{heading}</h1>
+        <hr className="headingContentLine" />
+        <p className="showContent">{content}</p>
       </div>
-      <div className="showNoteControlButtons">
+      <div className="showContentControlButtons">
         {canEdit && (
           <input
             type="button"

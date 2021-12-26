@@ -1,30 +1,29 @@
-.showEntry {
+.showNote {
     margin: 0 auto;
 
     border: 2px solid var(--main-color);
-    border-radius: 10px 10px 0 0;
+    border-radius: 5px 10px 0 0;
     word-wrap: break-word;
-
 }
 
-.showTitle {
+.showHeading {
     text-align: center;
 }
 
-.titleContentLine {
+.headingContentLine {
     border: 1px solid var(--main-color);
     color: var(--main-color);
     background-color: var(--main-color);
 }
 
-.showNote {
+.showContent {
     padding: 10px 20px;
     font-size: 16pt;
     line-height: 32px;
     white-space: pre-line;
 }
 
-.showNoteControlButtons {
+.showContentControlButtons {
     margin: 25px auto 0 auto;
     display: flex;
     justify-content: flex-end;

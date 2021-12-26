@@ -1,15 +1,15 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { BASE_API_URL, entryMocked } from '../../../config';
-import { IEntry } from '../slice';
+import { INote } from '../../../types/INote';
 
-const putEntry = createAsyncThunk<IEntry, IEntry>(
-  'entries/fetchEntry',
-  async (note: IEntry) => {
+const putNote = createAsyncThunk<INote, INote>(
+  'notes/fetchNote',
+  async (note: INote) => {
     if (entryMocked) {
       return note;
     }
 
-    const url = `${BASE_API_URL}/entries/${note.creationDate}`;
+    const url = `${BASE_API_URL}/notes/${note.creationDate}`;
 
     const res = await fetch(url, {
       method: 'PUT',
@@ -17,8 +17,8 @@ const putEntry = createAsyncThunk<IEntry, IEntry>(
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        title: note.title,
-        note: note.note,
+        title: note.heading,
+        note: note.content,
         modificationDate: note.modificationDate,
       }),
     });
@@ -26,8 +26,8 @@ const putEntry = createAsyncThunk<IEntry, IEntry>(
     if (!res.ok) throw new Error(res.statusText);
 
     const data = await res.json();
-    return data as IEntry;
+    return data as INote;
   },
 );
 
-export default putEntry;
+export default putNote;
