@@ -22,6 +22,8 @@
     "react-hooks"
   ],
   "rules": {
+    "function-paren-newline": "off",
+    "implicit-arrow-linebreak": "off",
     "max-lines": "off",
     "no-param-reassign": "off",
     "operator-linebreak": "off",

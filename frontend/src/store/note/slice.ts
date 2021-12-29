@@ -1,7 +1,10 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, isAnyOf, PayloadAction } from '@reduxjs/toolkit';
 import { INote } from '../../types/INote';
 import { NoteStatus } from '../../types/NoteStatus';
+import deleteNote from './thunks/deleteNote';
 import getNote from './thunks/getNote';
+import postNote from './thunks/postNote';
+import putNote from './thunks/putNote';
 
 export const initialState: INote = {
   heading: undefined,
@@ -27,15 +30,23 @@ export const noteSlice = createSlice({
       .addCase(getNote.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(getNote.fulfilled, (state, action) => {
+      .addCase(getNote.rejected, (state) => {
+        state.status = 'write';
+      });
+
+    builder.addCase(deleteNote.fulfilled, (state) => {
+      state.status = 'write';
+    });
+
+    builder.addMatcher(
+      isAnyOf(getNote.fulfilled, postNote.fulfilled, putNote.fulfilled),
+      (state, action) => {
         const { heading, content } = action.payload;
         state.heading = heading;
         state.content = content;
         state.status = 'show';
-      })
-      .addCase(getNote.rejected, (state) => {
-        state.status = 'write';
-      });
+      },
+    );
   },
 });
 

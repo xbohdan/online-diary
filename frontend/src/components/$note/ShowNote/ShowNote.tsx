@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import isEditable from '../../../helpers/isEditable';
 import useAppDispatch from '../../../hooks/useAppDispatch';
 import { setStatus } from '../../../store/note/slice';
+import deleteNote from '../../../store/note/thunks/deleteNote';
 import { INote } from '../../../types/INote';
 
 interface Props {
@@ -39,6 +40,9 @@ const ShowNote = ({ note }: Props) => {
           type="button"
           className="redButton deleteButton"
           value="Delete"
+          onClick={() => {
+            dispatch(deleteNote(date as string));
+          }}
         />
       </div>
     </>
