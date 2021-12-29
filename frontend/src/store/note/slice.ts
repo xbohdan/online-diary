@@ -9,7 +9,7 @@ import putNote from './thunks/putNote';
 export const initialState: INote = {
   heading: undefined,
   content: undefined,
-  creationDate: undefined,
+  initialDate: undefined,
   modificationDate: undefined,
   status: 'write',
 };

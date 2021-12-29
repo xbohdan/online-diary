@@ -23,7 +23,7 @@ const WriteNote = ({ note }: IProps) => {
   const { heading, content, status } = note;
 
   const submitNote = (_entry: INote) => {
-    _entry.creationDate = date;
+    _entry.initialDate = date;
 
     if (status === 'write') {
       dispatch(postNote(_entry));

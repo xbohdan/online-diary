@@ -17,7 +17,7 @@ const putNote = createAsyncThunk<INote, INote>(
       return toast.promise(returnDataWithDelay(note, 'slow 3G'), promiseStatus);
     }
 
-    const url = `${BASE_API_URL}/notes/${note.creationDate}`;
+    const url = `${BASE_API_URL}/notes/${note.initialDate}`;
 
     const promise = fetch(url, {
       method: 'PUT',
@@ -25,8 +25,8 @@ const putNote = createAsyncThunk<INote, INote>(
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        title: note.heading,
-        note: note.content,
+        heading: note.heading,
+        content: note.content,
         modificationDate: note.modificationDate,
       }),
     });
