@@ -17,7 +17,7 @@ const getNote = createAsyncThunk<INote, string>(
         return returnDataWithDelay(mockShowNote, 'fast 3G');
       }
 
-      return Promise.reject(new Error('Mock write'));
+      throw new Error('Mock write');
     }
 
     const res = await fetch(`${BASE_API_URL}/notes/${fetchDate}`);

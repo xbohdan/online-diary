@@ -1,4 +1,5 @@
 import { createSlice, isAnyOf, PayloadAction } from '@reduxjs/toolkit';
+import { toast } from 'react-toastify';
 import { INote } from '../../types/INote';
 import { NoteStatus } from '../../types/NoteStatus';
 import deleteNote from './thunks/deleteNote';
@@ -26,17 +27,28 @@ export const noteSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder
-      .addCase(getNote.pending, (state) => {
-        state.status = 'loading';
-      })
-      .addCase(getNote.rejected, (state) => {
-        state.status = 'write';
-      });
-
-    builder.addCase(deleteNote.fulfilled, (state) => {
+    builder.addCase(getNote.rejected, (state) => {
       state.status = 'write';
     });
+
+    builder
+      .addCase(postNote.fulfilled, () => {
+        toast.success('Note was saved!');
+      })
+      .addCase(putNote.fulfilled, () => {
+        toast.success('Note was updated!');
+      })
+      .addCase(deleteNote.fulfilled, (state) => {
+        state.status = 'write';
+        toast.success('Note was deleted!');
+      });
+
+    builder.addMatcher(
+      isAnyOf(postNote.rejected, putNote.rejected, deleteNote.rejected),
+      (state, action) => {
+        toast.error(action.error.message);
+      },
+    );
 
     builder.addMatcher(
       isAnyOf(getNote.fulfilled, postNote.fulfilled, putNote.fulfilled),
@@ -45,6 +57,18 @@ export const noteSlice = createSlice({
         state.heading = heading;
         state.content = content;
         state.status = 'show';
+      },
+    );
+
+    builder.addMatcher(
+      isAnyOf(
+        getNote.pending,
+        postNote.pending,
+        putNote.pending,
+        deleteNote.pending,
+      ),
+      (state) => {
+        state.status = 'loading';
       },
     );
   },
