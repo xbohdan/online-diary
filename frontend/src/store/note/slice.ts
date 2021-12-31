@@ -42,11 +42,15 @@ export const noteSlice = createSlice({
         state.status = 'write';
         toast.success('Note was deleted!');
       });
-
     builder.addMatcher(
-      isAnyOf(postNote.rejected, putNote.rejected, deleteNote.rejected),
-      (state, action) => {
-        toast.error(action.error.message);
+      isAnyOf(
+        getNote.pending,
+        postNote.pending,
+        putNote.pending,
+        deleteNote.pending,
+      ),
+      (state) => {
+        state.status = 'loading';
       },
     );
 
@@ -61,14 +65,9 @@ export const noteSlice = createSlice({
     );
 
     builder.addMatcher(
-      isAnyOf(
-        getNote.pending,
-        postNote.pending,
-        putNote.pending,
-        deleteNote.pending,
-      ),
-      (state) => {
-        state.status = 'loading';
+      isAnyOf(postNote.rejected, putNote.rejected, deleteNote.rejected),
+      (state, action) => {
+        toast.error(action.error.message);
       },
     );
   },
