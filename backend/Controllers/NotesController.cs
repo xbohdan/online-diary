@@ -11,7 +11,8 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace DiaryApi.Controllers
 {
-    [ApiController, Authorize, Route("api/[controller]")]
+    // [Authorize]
+    [ApiController, Route("api/[controller]")]
     public class NotesController : ControllerBase
     {
         private readonly DiaryDataContext _context;
@@ -39,7 +40,13 @@ namespace DiaryApi.Controllers
                 return NotFound();
             }
 
-            return Ok(new { note.Heading, note.Content });
+            var noteDTO = new NoteDTO
+            {
+                Heading = note.Heading,
+                Content = note.Content
+            };
+
+            return Ok(noteDTO);
         }
 
         // PUT: api/Notes/5
@@ -75,7 +82,13 @@ namespace DiaryApi.Controllers
                 }
             }
 
-            return Ok();
+            var noteDTO = new NoteDTO
+            {
+                Heading = note.Heading,
+                Content = note.Content
+            };
+
+            return Ok(noteDTO);
         }
 
         // POST: api/Notes
@@ -86,7 +99,13 @@ namespace DiaryApi.Controllers
             _context.Notes.Add(note);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetNote), new { initialDate = note.InitialDate.ToString("yyyy-MM-dd") }, note);
+            var noteDTO = new NoteDTO
+            {
+                Heading = note.Heading,
+                Content = note.Content
+            };
+
+            return CreatedAtAction(nameof(GetNote), new { initialDate = note.InitialDate.ToString("yyyy-MM-dd") }, noteDTO);
         }
 
         // DELETE: api/Notes/5

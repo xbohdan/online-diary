@@ -10,7 +10,7 @@ using System.Text;
 
 namespace DiaryApi.Controllers
 {
-    [ApiController, Route("api/[controller]")]
+    [ApiController, Route("api")]
     public class AuthenticationController : ControllerBase
     {
         private readonly IConfiguration _configuration;
@@ -23,7 +23,7 @@ namespace DiaryApi.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterModel model)
+        public async Task<IActionResult> Register([FromBody] UserModel model)
         {
             if (await _manager.FindByNameAsync(model.UserName) != null)
             {
@@ -32,7 +32,6 @@ namespace DiaryApi.Controllers
 
             ApplicationUser user = new()
             {
-                Email = model.Email,
                 UserName = model.UserName,
                 SecurityStamp = Guid.NewGuid().ToString()
             };
@@ -48,7 +47,7 @@ namespace DiaryApi.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginModel model)
+        public async Task<IActionResult> Login([FromBody] UserModel model)
         {
             var user = await _manager.FindByNameAsync(model.UserName);
 
@@ -73,7 +72,7 @@ namespace DiaryApi.Controllers
             var token = new JwtSecurityToken(
                 audience: _configuration["Jwt:Audience"],
                 claims: claims,
-                expires: DateTime.UtcNow.AddHours(1),
+                expires: DateTime.UtcNow.AddHours(3),
                 issuer: _configuration["Jwt:Issuer"],
                 signingCredentials: new(key, SecurityAlgorithms.HmacSha256)
                 );

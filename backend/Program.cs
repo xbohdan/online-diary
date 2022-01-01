@@ -52,9 +52,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseStaticFiles();
-
 app.UseDefaultFiles();
+
+app.UseStaticFiles();
 
 app.UseHttpsRedirection();
 
