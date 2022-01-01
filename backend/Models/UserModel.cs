@@ -2,7 +2,7 @@
 
 namespace DiaryApi.Models
 {
-    public class LoginModel
+    public class UserModel
     {
         [Required]
         public string UserName { get; set; } = "";

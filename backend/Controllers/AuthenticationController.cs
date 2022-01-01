@@ -23,7 +23,7 @@ namespace DiaryApi.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterModel model)
+        public async Task<IActionResult> Register([FromBody] UserModel model)
         {
             if (await _manager.FindByNameAsync(model.UserName) != null)
             {
@@ -32,7 +32,6 @@ namespace DiaryApi.Controllers
 
             ApplicationUser user = new()
             {
-                Email = model.Email,
                 UserName = model.UserName,
                 SecurityStamp = Guid.NewGuid().ToString()
             };
@@ -48,7 +47,7 @@ namespace DiaryApi.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginModel model)
+        public async Task<IActionResult> Login([FromBody] UserModel model)
         {
             var user = await _manager.FindByNameAsync(model.UserName);
 
