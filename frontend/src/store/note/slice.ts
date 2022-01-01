@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import { INote } from '../../types/INote';
 import { NoteStatus } from '../../types/NoteStatus';
 import deleteNote from './thunks/deleteNote';
-import getNote from './thunks/getNote';
+import fetchNote from './thunks/fetchNote';
 import postNote from './thunks/postNote';
 import putNote from './thunks/putNote';
 
@@ -27,7 +27,7 @@ export const noteSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(getNote.rejected, (state) => {
+    builder.addCase(fetchNote.rejected, (state) => {
       state.status = 'write';
     });
 
@@ -44,7 +44,7 @@ export const noteSlice = createSlice({
       });
     builder.addMatcher(
       isAnyOf(
-        getNote.pending,
+        fetchNote.pending,
         postNote.pending,
         putNote.pending,
         deleteNote.pending,
@@ -55,7 +55,7 @@ export const noteSlice = createSlice({
     );
 
     builder.addMatcher(
-      isAnyOf(getNote.fulfilled, postNote.fulfilled, putNote.fulfilled),
+      isAnyOf(fetchNote.fulfilled, postNote.fulfilled, putNote.fulfilled),
       (state, action) => {
         const { heading, content } = action.payload;
         state.heading = heading;

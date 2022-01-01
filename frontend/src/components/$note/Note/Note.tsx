@@ -7,7 +7,7 @@ import useAppDispatch from '../../../hooks/useAppDispatch';
 import useAppSelector from '../../../hooks/useAppSelector';
 import selectNote from '../../../store/note/selectors';
 import { initialState } from '../../../store/note/slice';
-import getNote from '../../../store/note/thunks/getNote';
+import fetchNote from '../../../store/note/thunks/fetchNote';
 import Container from '../../Container/Container';
 import Loader from '../../Loader/Loader';
 import PageTemplate from '../../PageTemplate/PageTemplate';
@@ -20,7 +20,7 @@ const Note = () => {
   const { date } = useParams();
 
   useLayoutEffect(() => {
-    dispatch(getNote(date as string));
+    dispatch(fetchNote(date as string));
   }, [dispatch, date]);
 
   return (

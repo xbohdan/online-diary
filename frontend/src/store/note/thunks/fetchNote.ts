@@ -6,8 +6,8 @@ import mockShowNote from '../../../mocks/mockShowNote';
 
 import { INote } from '../../../types/INote';
 
-const getNote = createAsyncThunk<INote, string>(
-  'notes/getNote',
+const fetchNote = createAsyncThunk<INote, string>(
+  'notes/fetchNote',
   async (fetchDate: string) => {
     if (entryMocked) {
       if (
@@ -29,4 +29,4 @@ const getNote = createAsyncThunk<INote, string>(
   },
 );
 
-export default getNote;
+export default fetchNote;
