@@ -10,7 +10,7 @@ using System.Text;
 
 namespace DiaryApi.Controllers
 {
-    [ApiController, Route("api/[controller]")]
+    [ApiController, Route("api")]
     public class AuthenticationController : ControllerBase
     {
         private readonly IConfiguration _configuration;
@@ -73,7 +73,7 @@ namespace DiaryApi.Controllers
             var token = new JwtSecurityToken(
                 audience: _configuration["Jwt:Audience"],
                 claims: claims,
-                expires: DateTime.UtcNow.AddHours(1),
+                expires: DateTime.UtcNow.AddHours(3),
                 issuer: _configuration["Jwt:Issuer"],
                 signingCredentials: new(key, SecurityAlgorithms.HmacSha256)
                 );
