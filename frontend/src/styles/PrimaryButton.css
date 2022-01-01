@@ -19,15 +19,7 @@
 }
 
 @keyframes primaryButtonPressed {
-    0% {
-        width: 25%;
-        height: 50px;
-    }
     50% {
         transform: scale(0.95);
-    }
-    100% {
-        width: 25%;
-        height: 50px;
     }
 }

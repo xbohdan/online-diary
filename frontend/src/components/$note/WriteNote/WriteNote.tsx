@@ -22,14 +22,14 @@ const WriteNote = ({ note }: IProps) => {
 
   const { heading, content, status } = note;
 
-  const submitNote = (_entry: INote) => {
-    _entry.initialDate = date;
+  const submitNote = (_note: INote) => {
+    _note.initialDate = date;
 
     if (status === 'write') {
-      dispatch(postNote(_entry));
+      dispatch(postNote(_note));
     } else if (status === 'update') {
-      _entry.modificationDate = dateToString(new Date());
-      dispatch(putNote(_entry));
+      _note.modificationDate = dateToString(new Date());
+      dispatch(putNote(_note));
     }
   };
 
