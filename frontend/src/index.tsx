@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import { HashRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import App from './components/App/App';
 import { store } from './store/store';
@@ -16,8 +17,10 @@ import './styles/RedButton.css';
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <ToastContainer className="toast" />
-      <App />
+      <HashRouter>
+        <ToastContainer className="toast" />
+        <App />
+      </HashRouter>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root'),
