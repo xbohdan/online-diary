@@ -23,7 +23,7 @@ namespace DiaryApi.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] UserModel model)
+        public async Task<IActionResult> Register([FromBody] Authentication model)
         {
             if (await _manager.FindByNameAsync(model.UserName) != null)
             {
@@ -47,7 +47,7 @@ namespace DiaryApi.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] UserModel model)
+        public async Task<IActionResult> Login([FromBody] Authentication model)
         {
             var user = await _manager.FindByNameAsync(model.UserName);
 
@@ -64,7 +64,7 @@ namespace DiaryApi.Controllers
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(JwtRegisteredClaimNames.Sub, user.UserName)
+                new Claim(ClaimTypes.NameIdentifier, user.Id)
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
@@ -72,7 +72,7 @@ namespace DiaryApi.Controllers
             var token = new JwtSecurityToken(
                 audience: _configuration["Jwt:Audience"],
                 claims: claims,
-                expires: DateTime.UtcNow.AddHours(3),
+                expires: DateTime.UtcNow.AddHours(1),
                 issuer: _configuration["Jwt:Issuer"],
                 signingCredentials: new(key, SecurityAlgorithms.HmacSha256)
                 );

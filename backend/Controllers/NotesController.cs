@@ -8,11 +8,12 @@ using Microsoft.EntityFrameworkCore;
 using DiaryApi.Data;
 using DiaryApi.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace DiaryApi.Controllers
 {
-    // [Authorize]
-    [ApiController, Route("api/[controller]")]
+    [ApiController, Authorize, Route("api/[controller]")]
     public class NotesController : ControllerBase
     {
         private readonly DiaryDataContext _context;
@@ -33,8 +34,12 @@ namespace DiaryApi.Controllers
         [HttpGet("{initialDate}")]
         public async Task<ActionResult<Note>> GetNote(DateTime initialDate)
         {
-            var note = await _context.Notes.Where(x => x.InitialDate == initialDate).FirstOrDefaultAsync();
+            if (User.Identity?.IsAuthenticated != true)
+            {
+                return Unauthorized();
+            }
 
+            var note = await _context.Notes.Where(x => x.InitialDate == initialDate).FirstOrDefaultAsync();
             if (note == null)
             {
                 return NotFound();
@@ -54,8 +59,12 @@ namespace DiaryApi.Controllers
         [HttpPut("{initialDate}")]
         public async Task<IActionResult> PutNote(DateTime initialDate, [Bind("Heading, Content, ModificationDate")] Note note)
         {
-            var noteToUpdate = await _context.Notes.Where(x => x.InitialDate == initialDate).FirstOrDefaultAsync();
+            if (User.Identity?.IsAuthenticated != true)
+            {
+                return Unauthorized();
+            }
 
+            var noteToUpdate = await _context.Notes.Where(x => x.InitialDate == initialDate).FirstOrDefaultAsync();
             if (noteToUpdate == null)
             {
                 return NotFound();
@@ -96,6 +105,11 @@ namespace DiaryApi.Controllers
         [HttpPost]
         public async Task<ActionResult<Note>> PostNote([Bind("Heading, Content, InitialDate")] Note note)
         {
+            if (User.Identity?.IsAuthenticated != true)
+            {
+                return Unauthorized();
+            }
+
             _context.Notes.Add(note);
             await _context.SaveChangesAsync();
 
@@ -112,8 +126,12 @@ namespace DiaryApi.Controllers
         [HttpDelete("{initialDate}")]
         public async Task<IActionResult> DeleteNote(DateTime initialDate)
         {
-            var note = await _context.Notes.Where(x => x.InitialDate == initialDate).FirstOrDefaultAsync();
+            if (User.Identity?.IsAuthenticated != true)
+            {
+                return Unauthorized();
+            }
 
+            var note = await _context.Notes.Where(x => x.InitialDate == initialDate).FirstOrDefaultAsync();
             if (note == null)
             {
                 return NotFound();
