@@ -1,0 +1,9 @@
+.errorMessage {
+    color: var(--red-color);
+    margin: 5px 0;
+}
+
+.errorMessage::before {
+    display: inline;
+    content: "⚠ ";
+}

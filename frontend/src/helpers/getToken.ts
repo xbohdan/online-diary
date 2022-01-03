@@ -1,9 +1,10 @@
 // First attempt to get token from Redux store, otherwise get token from the
 // localStorage. Reading from Redux store is faster.
 import { RootState } from '../store/store';
+import { selectToken } from '../store/user/selectors';
 
 const getToken = (store: RootState): string | null => {
-  let { token } = store.user.auth;
+  let token = selectToken(store);
   if (!token) token = localStorage.getItem('TOKEN');
   return token;
 };

@@ -1,5 +1,11 @@
 import React, { useEffect } from 'react';
-import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import {
+  Routes,
+  Route,
+  useLocation,
+  useNavigate,
+  Navigate,
+} from 'react-router-dom';
 import LoginPage from '../$auth/LoginPage/LoginPage';
 import RegistrationPage from '../$auth/RegistrationPage/RegistrationPage';
 import Note from '../$note/Note/Note';
@@ -39,6 +45,7 @@ const App = () => {
     <Routes>
       <Route path="/" element={<NotesCalendar />} />
       <Route path="/note/:date" element={<Note />} />
+      <Route path="/registration" element={<Navigate replace to="/" />} />
     </Routes>
   );
 };
