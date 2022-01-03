@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import TextareaAutosize from 'react-textarea-autosize';
 
 import './WriteNote.css';
+import PrimaryButton from '../../$buttons/PrimaryButton/PrimaryButton';
 import dateToString from '../../../helpers/dateToString';
 
 import useAppDispatch from '../../../hooks/useAppDispatch';
@@ -47,7 +48,7 @@ const WriteNote = ({ note }: IProps) => {
         placeholder="Write your note..."
         defaultValue={content}
       />
-      <input type="submit" className="primaryButton saveButton" value="Save" />
+      <PrimaryButton value="Save" className="saveButton" />
     </form>
   );
 };

@@ -1,6 +1,6 @@
 .secondaryButton {
     color: white;
-    background-color: var(--tertiary-color);
+    background-color: var(--secondary-color);
     border: transparent;
     border-radius: 5px;
 
@@ -10,12 +10,18 @@
 }
 
 .secondaryButton:hover {
-    background-color: var(--tertiary-color-hover);
+    background-color: var(--secondary-color-hover);
 }
 
 .secondaryButton:active {
     animation-name: secondaryButtonPressed;
     animation-duration: 100ms;
+}
+
+.secondaryButton:disabled {
+    cursor: default;
+    background-color: var(--secondary-color-disabled);
+    color: rgba(255, 255, 255, 0.5);
 }
 
 @keyframes secondaryButtonPressed {

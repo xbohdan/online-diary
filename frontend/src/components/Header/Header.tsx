@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import RedButton from '../$buttons/RedButton/RedButton';
 import useAppDispatch from '../../hooks/useAppDispatch';
 import logo from '../../static/LargeLogo.png';
 
@@ -22,10 +23,9 @@ const Header = () => {
         <Link to="/">
           <img src={logo} alt="Logo" className="logo" />
         </Link>
-        <input
-          type="button"
-          className="redButton logoutButton"
-          value="Log out"
+        <RedButton
+          value="Log Out"
+          className="logoutButton"
           onClick={logoutUser}
         />
       </Container>

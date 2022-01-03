@@ -18,7 +18,7 @@ ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <HashRouter>
-        <ToastContainer className="toast" />
+        <ToastContainer className="toast" autoClose={4000} limit={3} />
         <App />
       </HashRouter>
     </Provider>

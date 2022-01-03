@@ -18,6 +18,12 @@
     animation-duration: 100ms;
 }
 
+.redButton:disabled {
+    cursor: default;
+    background-color: var(--red-color-disabled);
+    color: rgba(255, 255, 255, 0.5);
+}
+
 @keyframes redButtonPressed {
     0% {
         width: 15%;

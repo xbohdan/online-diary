@@ -1,7 +1,11 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
+import PrimaryButton from '../../$buttons/PrimaryButton/PrimaryButton';
 import useAppDispatch from '../../../hooks/useAppDispatch';
+import useAppSelector from '../../../hooks/useAppSelector';
+import { setButtonIsDisabled } from '../../../store/button/slice';
+import selectIsAuth from '../../../store/user/selectors/selectIsAuth';
 import { setUsername } from '../../../store/user/slice';
 import registerUser from '../../../store/user/thunks/registerUser';
 import { ICredentials } from '../../../types/ICredentials';
@@ -13,10 +17,12 @@ const RegistrationPage = () => {
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
 
-  const submitLogin = (credentials: ICredentials) => {
+  const submitLogin = async (credentials: ICredentials) => {
+    dispatch(setButtonIsDisabled(true));
     dispatch(setUsername(credentials.userName));
-    dispatch(registerUser(credentials));
+    await dispatch(registerUser(credentials));
     navigate('/');
+    dispatch(setButtonIsDisabled(false));
   };
 
   return (
@@ -35,11 +41,7 @@ const RegistrationPage = () => {
             className="loginInput"
             placeholder="Password"
           />
-          <input
-            type="submit"
-            className="primaryButton loginButton"
-            value="Sign Up"
-          />
+          <PrimaryButton value="Sign Up" className="loginButton" />
         </form>
         <div className="loginSubform">
           <p>

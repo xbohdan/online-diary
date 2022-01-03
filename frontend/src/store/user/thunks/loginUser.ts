@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { BASE_API_URL, userMocked } from '../../../config';
+import returnDataWithDelay from '../../../helpers/returnDataWithDelay';
 import mockAuth from '../../../mocks/mockAuth';
 import { IAuth } from '../../../types/IAuth';
 import { ICredentials } from '../../../types/ICredentials';
@@ -8,7 +9,7 @@ const loginUser = createAsyncThunk<IAuth, ICredentials>(
   'user/login',
   async (user: ICredentials) => {
     if (userMocked) {
-      return mockAuth;
+      return returnDataWithDelay(mockAuth, 'fast 3G');
     }
 
     const url = `${BASE_API_URL}/login/`;
