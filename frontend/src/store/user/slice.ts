@@ -1,4 +1,5 @@
 import { createSlice, isAnyOf, PayloadAction } from '@reduxjs/toolkit';
+import { toast } from 'react-toastify';
 import { IUser } from '../../types/IUser';
 import loginUser from './thunks/loginUser';
 import registerUser from './thunks/registerUser';
@@ -25,6 +26,7 @@ export const userSlice = createSlice({
       localStorage.removeItem('USERNAME');
       localStorage.removeItem('TOKEN');
       localStorage.removeItem('EXPIRATION');
+      toast.warn('Logged out');
     },
   },
   extraReducers: (builder) => {
