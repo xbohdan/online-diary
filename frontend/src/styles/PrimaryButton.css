@@ -18,6 +18,12 @@
     animation-duration: 100ms;
 }
 
+.primaryButton:disabled {
+    cursor: default;
+    background-color: var(--main-color-disabled);
+    color: rgba(255, 255, 255, 0.5);
+}
+
 @keyframes primaryButtonPressed {
     50% {
         transform: scale(0.95);

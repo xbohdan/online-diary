@@ -17,7 +17,9 @@ const returnDataWithDelay = <T>(
       break;
   }
 
-  return new Promise((resolve) => setTimeout(() => resolve(data), delayMs));
+  return new Promise((resolve, reject) =>
+    setTimeout(() => resolve(data), delayMs),
+  );
 };
 
 export default returnDataWithDelay;

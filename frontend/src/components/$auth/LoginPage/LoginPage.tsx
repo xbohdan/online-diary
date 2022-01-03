@@ -1,7 +1,11 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
+import PrimaryButton from '../../$buttons/PrimaryButton/PrimaryButton';
 import useAppDispatch from '../../../hooks/useAppDispatch';
+import useAppSelector from '../../../hooks/useAppSelector';
+import { setButtonIsDisabled } from '../../../store/button/slice';
+import selectIsAuth from '../../../store/user/selectors/selectIsAuth';
 import { setUsername } from '../../../store/user/slice';
 import loginUser from '../../../store/user/thunks/loginUser';
 import { ICredentials } from '../../../types/ICredentials';
@@ -14,9 +18,11 @@ const LoginPage = () => {
   const dispatch = useAppDispatch();
   const { register, handleSubmit } = useForm();
 
-  const submitLogin = (credentials: ICredentials) => {
+  const submitLogin = async (credentials: ICredentials) => {
+    dispatch(setButtonIsDisabled(true));
     dispatch(setUsername(credentials.userName));
-    dispatch(loginUser(credentials));
+    await dispatch(loginUser(credentials));
+    dispatch(setButtonIsDisabled(false));
   };
 
   return (
@@ -35,11 +41,7 @@ const LoginPage = () => {
             className="loginInput"
             placeholder="Password"
           />
-          <input
-            type="submit"
-            className="primaryButton loginButton"
-            value="Log In"
-          />
+          <PrimaryButton value="Log In" className="loginButton" />
         </form>
         <div className="loginSubform">
           <p>

@@ -2,6 +2,7 @@ import React from 'react';
 
 import './ShowNote.css';
 import { useParams } from 'react-router-dom';
+import RedButton from '../../$buttons/RedButton/RedButton';
 import isEditable from '../../../helpers/isEditable';
 import useAppDispatch from '../../../hooks/useAppDispatch';
 import { setStatus } from '../../../store/note/slice';
@@ -36,10 +37,9 @@ const ShowNote = ({ note }: Props) => {
             onClick={() => dispatch(setStatus('update'))}
           />
         )}
-        <input
-          type="button"
-          className="redButton deleteButton"
+        <RedButton
           value="Delete"
+          className="deleteButton"
           onClick={() => {
             dispatch(deleteNote(date as string));
           }}
