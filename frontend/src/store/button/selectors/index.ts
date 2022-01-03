@@ -1,5 +1,5 @@
 import { RootState } from '../../store';
 
-const selectIsDisabled = (store: RootState) => store.button.isDisabled;
+const selectIsDisabled = (store: RootState): boolean => store.button.isDisabled;
 
 export default selectIsDisabled;
