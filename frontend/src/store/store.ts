@@ -2,13 +2,11 @@ import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import isValidToken from '../helpers/isValidToken';
 import userReducer from './user/slice';
 import noteReducer from './note/slice';
-import buttonReducer from './button/slice';
 
 export const store = configureStore({
   reducer: {
     user: userReducer,
     note: noteReducer,
-    button: buttonReducer,
   },
 });
 

@@ -1,17 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
-import useAppSelector from '../../../hooks/useAppSelector';
-import selectIsDisabled from '../../../store/button/selectors';
+import { IButton } from '../../../types/IButton';
 
-interface Props {
-  value: string;
-  className?: string;
-  onClick?: () => void;
-}
-
-const PrimaryButton = ({ value, className, onClick }: Props) => {
-  const isDisabled = useAppSelector(selectIsDisabled);
-
+const PrimaryButton = ({ value, className, isDisabled, onClick }: IButton) => {
   return (
     <input
       type="submit"

@@ -1,8 +1,7 @@
-import { createSlice, isAnyOf, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
+import { IAuth } from '../../types/IAuth';
 import { IUser } from '../../types/IUser';
-import loginUser from './thunks/loginUser';
-import registerUser from './thunks/registerUser';
 
 export const initialState: IUser = {
   userName: localStorage.getItem('USERNAME'),
@@ -19,6 +18,9 @@ export const userSlice = createSlice({
     setUsername: (state, action: PayloadAction<string>) => {
       state.userName = action.payload;
     },
+    setAuth: (state, action: PayloadAction<IAuth>) => {
+      state.auth = action.payload;
+    },
     logout: (state) => {
       state.auth.token = null;
       state.auth.expiration = undefined;
@@ -29,16 +31,8 @@ export const userSlice = createSlice({
       toast.warn('Logged out');
     },
   },
-  extraReducers: (builder) => {
-    builder.addMatcher(
-      isAnyOf(registerUser.fulfilled, loginUser.fulfilled),
-      (state, action) => {
-        state.auth = action.payload;
-      },
-    );
-  },
 });
 
-export const { setUsername, logout } = userSlice.actions;
+export const { setUsername, setAuth, logout } = userSlice.actions;
 
 export default userSlice.reducer;

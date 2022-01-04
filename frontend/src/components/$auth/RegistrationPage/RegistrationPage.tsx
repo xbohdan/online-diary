@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { ErrorMessage } from '@hookform/error-message';
 import PrimaryButton from '../../$buttons/PrimaryButton/PrimaryButton';
+import registerUser from '../../../helpers/auth/registerUser';
 import useAppDispatch from '../../../hooks/useAppDispatch';
-import { setButtonIsDisabled } from '../../../store/button/slice';
-import { setUsername } from '../../../store/user/slice';
-import registerUser from '../../../store/user/thunks/registerUser';
+import { setAuth, setUsername } from '../../../store/user/slice';
+import { IAuth } from '../../../types/IAuth';
 import { ICredentials } from '../../../types/ICredentials';
 import Container from '../../Container/Container';
 import PageTemplateUnauth from '../../PageTemplateUnauth/PageTemplateUnauth';
@@ -19,13 +19,24 @@ const RegistrationPage = () => {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
   } = useForm({ criteriaMode: 'all' });
 
+  const [isDisabled, setIsDisabled] = useState(false);
   const submitRegistration = async (credentials: ICredentials) => {
-    dispatch(setButtonIsDisabled(true));
-    dispatch(setUsername(credentials.userName));
-    await dispatch(registerUser(credentials));
-    dispatch(setButtonIsDisabled(false));
+    setIsDisabled(true);
+    try {
+      const auth = await registerUser(credentials);
+      dispatch(setUsername(credentials.userName));
+      dispatch(setAuth(auth as IAuth));
+    } catch (error) {
+      setError('userName', {
+        type: 'unavailableUsername',
+        message: error.message,
+      });
+    } finally {
+      setIsDisabled(false);
+    }
   };
 
   return (
@@ -38,6 +49,9 @@ const RegistrationPage = () => {
             className="loginInput"
             placeholder="Username"
           />
+          {errors.userName && (
+            <p className="errorMessage">{errors.userName.message}</p>
+          )}
           <input
             {...register('password', {
               required: 'Password cannot be empty',
@@ -75,7 +89,11 @@ const RegistrationPage = () => {
               ))
             }
           />
-          <PrimaryButton value="Sign Up" className="loginButton" />
+          <PrimaryButton
+            value="Sign Up"
+            className="loginButton"
+            isDisabled={isDisabled}
+          />
         </form>
         <div className="loginSubform">
           <p>

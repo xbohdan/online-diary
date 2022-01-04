@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import PrimaryButton from '../../$buttons/PrimaryButton/PrimaryButton';
+import loginUser from '../../../helpers/auth/loginUser';
 import useAppDispatch from '../../../hooks/useAppDispatch';
-import { setButtonIsDisabled } from '../../../store/button/slice';
-import { setUsername } from '../../../store/user/slice';
-import loginUser from '../../../store/user/thunks/loginUser';
+import { setAuth, setUsername } from '../../../store/user/slice';
+import { IAuth } from '../../../types/IAuth';
 import { ICredentials } from '../../../types/ICredentials';
 import Container from '../../Container/Container';
 
@@ -14,13 +14,28 @@ import PageTemplateUnauth from '../../PageTemplateUnauth/PageTemplateUnauth';
 
 const LoginPage = () => {
   const dispatch = useAppDispatch();
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm();
 
+  const [isDisabled, setIsDisabled] = useState(false);
   const submitLogin = async (credentials: ICredentials) => {
-    dispatch(setButtonIsDisabled(true));
-    dispatch(setUsername(credentials.userName));
-    await dispatch(loginUser(credentials));
-    dispatch(setButtonIsDisabled(false));
+    setIsDisabled(true);
+    try {
+      const auth = await loginUser(credentials);
+      dispatch(setUsername(credentials.userName));
+      dispatch(setAuth(auth as IAuth));
+    } catch (error) {
+      setError('password', {
+        type: 'incorrectPassword',
+        message: error.message,
+      });
+    } finally {
+      setIsDisabled(false);
+    }
   };
 
   return (
@@ -39,7 +54,14 @@ const LoginPage = () => {
             className="loginInput"
             placeholder="Password"
           />
-          <PrimaryButton value="Log In" className="loginButton" />
+          {errors.password && (
+            <p className="errorMessage">{errors.password.message}</p>
+          )}
+          <PrimaryButton
+            value="Log In"
+            className="loginButton"
+            isDisabled={isDisabled}
+          />
         </form>
         <div className="loginSubform">
           <p>

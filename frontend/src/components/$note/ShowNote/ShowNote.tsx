@@ -3,6 +3,7 @@ import React from 'react';
 import './ShowNote.css';
 import { useParams } from 'react-router-dom';
 import RedButton from '../../$buttons/RedButton/RedButton';
+import SecondaryButton from '../../$buttons/SecondaryButton/SecondaryButton';
 import isEditable from '../../../helpers/isEditable';
 import useAppDispatch from '../../../hooks/useAppDispatch';
 import { setStatus } from '../../../store/note/slice';
@@ -30,10 +31,9 @@ const ShowNote = ({ note }: Props) => {
       </div>
       <div className="showContentControlButtons">
         {canEdit && (
-          <input
-            type="button"
-            className="secondaryButton editButton"
+          <SecondaryButton
             value="Edit"
+            className="editButton"
             onClick={() => dispatch(setStatus('update'))}
           />
         )}
