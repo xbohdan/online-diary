@@ -39,7 +39,7 @@ namespace DiaryApi.Controllers
                 return Unauthorized();
             }
 
-            var note = await _context.Notes.Where(x => x.InitialDate == initialDate).FirstOrDefaultAsync();
+            var note = await FindNoteAsync(initialDate);
             if (note == null)
             {
                 return NotFound();
@@ -64,7 +64,7 @@ namespace DiaryApi.Controllers
                 return Unauthorized();
             }
 
-            var noteToUpdate = await _context.Notes.Where(x => x.InitialDate == initialDate).FirstOrDefaultAsync();
+            var noteToUpdate = await FindNoteAsync(initialDate);
             if (noteToUpdate == null)
             {
                 return NotFound();
@@ -110,6 +110,8 @@ namespace DiaryApi.Controllers
                 return Unauthorized();
             }
 
+            note.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
             _context.Notes.Add(note);
             await _context.SaveChangesAsync();
 
@@ -131,7 +133,7 @@ namespace DiaryApi.Controllers
                 return Unauthorized();
             }
 
-            var note = await _context.Notes.Where(x => x.InitialDate == initialDate).FirstOrDefaultAsync();
+            var note = await FindNoteAsync(initialDate);
             if (note == null)
             {
                 return NotFound();
@@ -145,7 +147,17 @@ namespace DiaryApi.Controllers
 
         private bool NoteExists(DateTime initialDate)
         {
-            return _context.Notes.Any(x => x.InitialDate == initialDate);
+            return _context.Notes
+                .Any(x => x.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier)
+                && x.InitialDate == initialDate);
+        }
+
+        private async Task<Note?> FindNoteAsync(DateTime initialDate)
+        {
+            return await _context.Notes
+                .Where(x => x.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier)
+                && x.InitialDate == initialDate)
+                .FirstOrDefaultAsync();
         }
     }
 }

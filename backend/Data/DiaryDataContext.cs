@@ -23,7 +23,7 @@ namespace DiaryApi.Data
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Name=ConnectionStrings:DiaryData");
+                optionsBuilder.UseSqlServer("Name=DefaultConnection");
             }
         }
 
@@ -31,9 +31,7 @@ namespace DiaryApi.Data
         {
             modelBuilder.Entity<Note>(entity =>
             {
-                entity.ToTable("Note");
-
-                entity.HasIndex(e => e.InitialDate, "UQ__Note__72232AC97CB6B6F7")
+                entity.HasIndex(e => new { e.UserId, e.InitialDate }, "AK_Note")
                     .IsUnique();
 
                 entity.Property(e => e.Heading).HasMaxLength(100);
