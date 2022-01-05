@@ -81,7 +81,7 @@ namespace DiaryApi.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!NoteExists(initialDate))
+                if (! await NoteExistsAsync(initialDate))
                 {
                     return NotFound();
                 }
@@ -145,10 +145,10 @@ namespace DiaryApi.Controllers
             return NoContent();
         }
 
-        private bool NoteExists(DateTime initialDate)
+        private async Task<bool> NoteExistsAsync(DateTime initialDate)
         {
-            return _context.Notes
-                .Any(x => x.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier)
+            return await _context.Notes
+                .AnyAsync(x => x.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier)
                 && x.InitialDate == initialDate);
         }
 
