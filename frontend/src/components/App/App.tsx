@@ -37,6 +37,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/registration" element={<RegistrationPage />} />
+        <Route path="/note/:date" element={<Navigate replace to="/" />} />
       </Routes>
     );
   }
