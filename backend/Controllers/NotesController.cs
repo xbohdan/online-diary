@@ -25,9 +25,17 @@ namespace DiaryApi.Controllers
 
         // GET: api/Notes
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Note>>> GetNotes()
+        public async Task<ActionResult<IEnumerable<string>>> GetNotes()
         {
-            return await _context.Notes.ToListAsync();
+            if (User.Identity?.IsAuthenticated != true)
+            {
+                return Unauthorized();
+            }
+
+            return await _context.Notes
+                .Where(x => x.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier))
+                .Select(x => x.InitialDate.ToString("yyyy-MM-dd"))
+                .ToListAsync();
         }
 
         // GET: api/Notes/5
