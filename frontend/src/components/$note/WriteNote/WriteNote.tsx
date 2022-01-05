@@ -41,6 +41,7 @@ const WriteNote = ({ note }: IProps) => {
         className="writeHeading inputField"
         placeholder="Title"
         defaultValue={heading}
+        maxLength={100}
       />
       <TextareaAutosize
         {...register('content', { required: true })}
