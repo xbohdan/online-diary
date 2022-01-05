@@ -42,11 +42,11 @@ const RegistrationPage = () => {
   return (
     <PageTemplateUnauth>
       <Container>
-        <form onSubmit={handleSubmit(submitRegistration)} className="loginForm">
+        <form onSubmit={handleSubmit(submitRegistration)} className="authForm">
           <input
             {...register('userName', { required: true })}
             type="text"
-            className="loginInput"
+            className="authInput"
             placeholder="Username"
           />
           {errors.userName && (
@@ -74,7 +74,7 @@ const RegistrationPage = () => {
               },
             })}
             type="password"
-            className="loginInput"
+            className="authInput"
             placeholder="Password"
           />
           <ErrorMessage
@@ -91,11 +91,11 @@ const RegistrationPage = () => {
           />
           <PrimaryButton
             value="Sign Up"
-            className="loginButton"
+            className="authButton"
             isDisabled={isDisabled}
           />
         </form>
-        <div className="loginSubform">
+        <div className="authSubform">
           <p>
             Have an account?&nbsp;
             <Link to="/">Log In</Link>

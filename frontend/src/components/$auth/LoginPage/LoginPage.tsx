@@ -41,17 +41,17 @@ const LoginPage = () => {
   return (
     <PageTemplateUnauth>
       <Container>
-        <form onSubmit={handleSubmit(submitLogin)} className="loginForm">
+        <form onSubmit={handleSubmit(submitLogin)} className="authForm">
           <input
             {...register('userName', { required: true })}
             type="text"
-            className="loginInput"
+            className="authInput"
             placeholder="Username"
           />
           <input
             {...register('password', { required: true })}
             type="password"
-            className="loginInput"
+            className="authInput"
             placeholder="Password"
           />
           {errors.password && (
@@ -59,11 +59,11 @@ const LoginPage = () => {
           )}
           <PrimaryButton
             value="Log In"
-            className="loginButton"
+            className="authButton"
             isDisabled={isDisabled}
           />
         </form>
-        <div className="loginSubform">
+        <div className="authSubform">
           <p>
             Don&apos;t have an account?&nbsp;
             <Link to="/registration">Sign Up</Link>
