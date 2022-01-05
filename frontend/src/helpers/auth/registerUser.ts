@@ -19,7 +19,7 @@ const registerUser = async (credentials: ICredentials) => {
     body: JSON.stringify(credentials),
   });
 
-  const unavailableUserName = 406;
+  const unavailableUserName = 409;
   if (res.status === unavailableUserName) {
     throw new Error('Username already exists');
   }
