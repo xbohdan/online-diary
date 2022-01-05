@@ -11,19 +11,19 @@ using System.Text;
 namespace DiaryApi.Controllers
 {
     [ApiController, Route("api")]
-    public class AuthenticationController : ControllerBase
+    public class AccountsController : ControllerBase
     {
         private readonly IConfiguration _configuration;
         private readonly UserManager<ApplicationUser> _manager;
 
-        public AuthenticationController(IConfiguration configuration, UserManager<ApplicationUser> manager)
+        public AccountsController(IConfiguration configuration, UserManager<ApplicationUser> manager)
         {
             _configuration = configuration;
             _manager = manager;
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] Authentication model)
+        public async Task<IActionResult> Register([FromBody] Account model)
         {
             if (await _manager.FindByNameAsync(model.UserName) != null)
             {
@@ -47,7 +47,7 @@ namespace DiaryApi.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] Authentication model)
+        public async Task<IActionResult> Login([FromBody] Account model)
         {
             var user = await _manager.FindByNameAsync(model.UserName);
 

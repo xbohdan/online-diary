@@ -25,9 +25,17 @@ namespace DiaryApi.Controllers
 
         // GET: api/Notes
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Note>>> GetNotes()
+        public async Task<ActionResult<IEnumerable<string>>> GetNotes()
         {
-            return await _context.Notes.ToListAsync();
+            if (User.Identity?.IsAuthenticated != true)
+            {
+                return Unauthorized();
+            }
+
+            return await _context.Notes
+                .Where(x => x.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier))
+                .Select(x => x.InitialDate.ToString("yyyy-MM-dd"))
+                .ToListAsync();
         }
 
         // GET: api/Notes/5
@@ -39,7 +47,7 @@ namespace DiaryApi.Controllers
                 return Unauthorized();
             }
 
-            var note = await _context.Notes.Where(x => x.InitialDate == initialDate).FirstOrDefaultAsync();
+            var note = await FindNoteAsync(initialDate);
             if (note == null)
             {
                 return NotFound();
@@ -64,7 +72,7 @@ namespace DiaryApi.Controllers
                 return Unauthorized();
             }
 
-            var noteToUpdate = await _context.Notes.Where(x => x.InitialDate == initialDate).FirstOrDefaultAsync();
+            var noteToUpdate = await FindNoteAsync(initialDate);
             if (noteToUpdate == null)
             {
                 return NotFound();
@@ -81,7 +89,7 @@ namespace DiaryApi.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!NoteExists(initialDate))
+                if (! await NoteExistsAsync(initialDate))
                 {
                     return NotFound();
                 }
@@ -110,6 +118,8 @@ namespace DiaryApi.Controllers
                 return Unauthorized();
             }
 
+            note.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
             _context.Notes.Add(note);
             await _context.SaveChangesAsync();
 
@@ -131,7 +141,7 @@ namespace DiaryApi.Controllers
                 return Unauthorized();
             }
 
-            var note = await _context.Notes.Where(x => x.InitialDate == initialDate).FirstOrDefaultAsync();
+            var note = await FindNoteAsync(initialDate);
             if (note == null)
             {
                 return NotFound();
@@ -143,9 +153,19 @@ namespace DiaryApi.Controllers
             return NoContent();
         }
 
-        private bool NoteExists(DateTime initialDate)
+        private async Task<bool> NoteExistsAsync(DateTime initialDate)
         {
-            return _context.Notes.Any(x => x.InitialDate == initialDate);
+            return await _context.Notes
+                .AnyAsync(x => x.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier)
+                && x.InitialDate == initialDate);
+        }
+
+        private async Task<Note?> FindNoteAsync(DateTime initialDate)
+        {
+            return await _context.Notes
+                .Where(x => x.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier)
+                && x.InitialDate == initialDate)
+                .FirstOrDefaultAsync();
         }
     }
 }
