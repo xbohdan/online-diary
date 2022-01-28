@@ -13,7 +13,9 @@ using System.IdentityModel.Tokens.Jwt;
 
 namespace DiaryApi.Controllers
 {
-    [ApiController, Authorize, Route("api/[controller]")]
+    [ApiController]
+    [Authorize]
+    [Route("api/[controller]")]
     public class NotesController : ControllerBase
     {
         private readonly DiaryDataContext _context;
@@ -23,23 +25,10 @@ namespace DiaryApi.Controllers
             _context = context;
         }
 
-        // GET: api/Notes
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<string>>> GetNotes()
-        {
-            if (User.Identity?.IsAuthenticated != true)
-            {
-                return Unauthorized();
-            }
-
-            return await _context.Notes
-                .Where(x => x.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier))
-                .Select(x => x.InitialDate.ToString("yyyy-MM-dd"))
-                .ToListAsync();
-        }
-
         // GET: api/Notes/5
         [HttpGet("{initialDate}")]
+        [ProducesResponseType(typeof(BaseNoteDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<Note>> GetNote(DateTime initialDate)
         {
             if (User.Identity?.IsAuthenticated != true)
@@ -53,43 +42,45 @@ namespace DiaryApi.Controllers
                 return NotFound();
             }
 
-            var noteDTO = new NoteDTO
+            var baseNoteDto = new BaseNoteDto
             {
                 Heading = note.Heading,
                 Content = note.Content
             };
 
-            return Ok(noteDTO);
+            return Ok(baseNoteDto);
         }
 
         // PUT: api/Notes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{initialDate}")]
-        public async Task<IActionResult> PutNote(DateTime initialDate, [Bind("Heading, Content, ModificationDate")] Note note)
+        [ProducesResponseType(typeof(BaseNoteDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> PutNote(DateTime initialDate, UpdatedNoteDto updatedNoteDto)
         {
             if (User.Identity?.IsAuthenticated != true)
             {
                 return Unauthorized();
             }
 
-            var noteToUpdate = await FindNoteAsync(initialDate);
-            if (noteToUpdate == null)
+            var note = await FindNoteAsync(initialDate);
+            if (note == null)
             {
                 return NotFound();
             }
 
-            noteToUpdate.Heading = note.Heading;
-            noteToUpdate.Content = note.Content;
-            noteToUpdate.ModificationDate = note.ModificationDate;
+            note.Heading = updatedNoteDto.Heading;
+            note.Content = updatedNoteDto.Content;
+            note.ModificationDate = updatedNoteDto.ModificationDate;
 
             try
             {
-                _context.Update(noteToUpdate);
+                _context.Update(note);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (! await NoteExistsAsync(initialDate))
+                if (!await NoteExistsAsync(initialDate))
                 {
                     return NotFound();
                 }
@@ -99,41 +90,50 @@ namespace DiaryApi.Controllers
                 }
             }
 
-            var noteDTO = new NoteDTO
+            var baseNoteDto = new BaseNoteDto
             {
-                Heading = note.Heading,
-                Content = note.Content
+                Heading = updatedNoteDto.Heading,
+                Content = updatedNoteDto.Content
             };
 
-            return Ok(noteDTO);
+            return Ok(baseNoteDto);
         }
 
         // POST: api/Notes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Note>> PostNote([Bind("Heading, Content, InitialDate")] Note note)
+        [ProducesResponseType(typeof(BaseNoteDto), StatusCodes.Status201Created)]
+        public async Task<ActionResult<Note>> PostNote(CreatedNoteDto createdNoteDto)
         {
             if (User.Identity?.IsAuthenticated != true)
             {
                 return Unauthorized();
             }
 
-            note.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var note = new Note
+            {
+                Heading = createdNoteDto.Heading,
+                Content = createdNoteDto.Content,
+                InitialDate = createdNoteDto.InitialDate,
+                UserId = User.FindFirstValue(ClaimTypes.NameIdentifier)
+            };
 
             _context.Notes.Add(note);
             await _context.SaveChangesAsync();
 
-            var noteDTO = new NoteDTO
+            var baseNoteDto = new BaseNoteDto
             {
-                Heading = note.Heading,
-                Content = note.Content
+                Heading = createdNoteDto.Heading,
+                Content = createdNoteDto.Content
             };
 
-            return CreatedAtAction(nameof(GetNote), new { initialDate = note.InitialDate.ToString("yyyy-MM-dd") }, noteDTO);
+            return CreatedAtAction(nameof(GetNote), new { initialDate = note.InitialDate.ToString("yyyy-MM-dd") }, baseNoteDto);
         }
 
         // DELETE: api/Notes/5
         [HttpDelete("{initialDate}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteNote(DateTime initialDate)
         {
             if (User.Identity?.IsAuthenticated != true)
