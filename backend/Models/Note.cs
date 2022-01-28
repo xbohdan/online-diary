@@ -10,10 +10,12 @@ namespace DiaryApi.Models
 
         public string UserId { get; set; } = "";
 
-        [DataType(DataType.Text), Required]
+        [DataType(DataType.Text)]
+        [Required]
         public string Heading { get; set; } = "";
 
-        [DataType(DataType.MultilineText), Required]
+        [DataType(DataType.MultilineText)]
+        [Required]
         public string Content { get; set; } = "";
 
         [DataType(DataType.Date)]
