@@ -1,7 +1,10 @@
 import React, { useLayoutEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import './Note.css';
+import dateToString from '../../../helpers/dateToString';
+import getNextDate from '../../../helpers/getNextDate';
+import getPrevDate from '../../../helpers/getPrevDate';
 
 import useAppDispatch from '../../../hooks/useAppDispatch';
 import useAppSelector from '../../../hooks/useAppSelector';
@@ -23,13 +26,41 @@ const Note = () => {
     dispatch(fetchNote(date as string));
   }, [dispatch, date]);
 
+  const navigate = useNavigate();
+
+  const navigateToPrev = (currentDate: string) => {
+    const prevDate = getPrevDate(new Date(currentDate));
+    const path = `/note/${dateToString(prevDate)}`;
+    navigate(path);
+  };
+
+  const navigateToNext = (currentDate: string) => {
+    const nextDate = getNextDate(new Date(currentDate));
+    const path = `/note/${dateToString(nextDate)}`;
+    navigate(path);
+  };
+
   return (
     <PageTemplate>
       <Container>
+        <button
+          type="button"
+          onClick={() => navigateToPrev(date as string)}
+          className="arrowDiv leftArrowDiv"
+        >
+          <span className="arrow ">←</span>
+        </button>
         {note.status === 'loading' && <Loader />}
         {note.status === 'show' && <ShowNote note={note} />}
         {note.status === 'write' && <WriteNote note={initialState} />}
         {note.status === 'update' && <WriteNote note={note} />}
+        <button
+          type="button"
+          onClick={() => navigateToNext(date as string)}
+          className="arrowDiv rightArrowDiv"
+        >
+          <span className="arrow">→</span>
+        </button>
       </Container>
     </PageTemplate>
   );
