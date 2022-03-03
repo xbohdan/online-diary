@@ -1,0 +1,35 @@
+.arrowDiv {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+
+    display: flex;
+    align-items: center;
+
+    font-size: 24pt;
+    color: var(--main-color-disabled);
+    user-select: none;
+    border: 0;
+    background-color: transparent;
+
+    transition-duration: 0.5s;
+}
+
+.arrow {
+    margin: 0 25px;
+}
+
+.arrowDiv:hover {
+    cursor: pointer;
+    opacity: 1;
+    color: var(--main-color);
+    background-color: #eeeeee;
+}
+
+.leftArrowDiv {
+    left: 0;
+}
+
+.rightArrowDiv {
+    right: 0;
+}
